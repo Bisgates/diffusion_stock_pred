@@ -1,0 +1,62 @@
+# Default configuration for MacBook training
+# Stock Diffusion Prediction Model
+
+data:
+  data_dir: "data_1s"
+  sequence_length: 120
+  prediction_horizon: 30
+  stride: 1
+  input_features:
+    - log_return
+    - volatility_5s
+    - spread
+    - volume_zscore
+  batch_size: 128
+  num_workers: 0  # MPS works better with 0 workers
+
+model:
+  # Condition encoder
+  encoder_type: transformer  # transformer, lstm, convlstm
+  encoder_dim: 64
+  encoder_layers: 2
+  encoder_heads: 4
+
+  # Diffusion model
+  diffusion_steps: 500
+  noise_schedule: cosine  # linear, cosine, sigmoid
+  prediction_type: epsilon  # epsilon, v, x_0
+
+  # Denoising network
+  denoiser_type: mlp  # mlp, cross_attn
+  denoising_hidden_dim: 128
+  denoising_blocks: 4
+  time_embedding_dim: 64
+
+  # Regularization
+  dropout: 0.1
+
+training:
+  epochs: 50
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  gradient_accumulation: 2  # effective batch = batch_size * 2 = 256
+  warmup_steps: 500
+  scheduler_type: cosine  # cosine, linear, constant
+  min_lr: 0.000001
+  max_grad_norm: 1.0
+  early_stopping_patience: 10
+  device: mps  # mps (MacBook), cuda, cpu
+  use_wandb: false
+  wandb_project: stock-diffusion
+
+inference:
+  num_samples: 100
+  use_ddim: true
+  ddim_steps: 50
+  eta: 0.0
+
+output:
+  checkpoint_dir: outputs/checkpoints
+  log_dir: outputs/logs
+  save_every_epochs: 5
+  keep_last_n: 3

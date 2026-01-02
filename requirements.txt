@@ -1,0 +1,28 @@
+# Stock Diffusion Prediction - Dependencies
+
+# Core
+torch>=2.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Data processing
+scipy>=1.10.0
+
+# Configuration
+pyyaml>=6.0
+
+# Progress bars
+tqdm>=4.65.0
+
+# System monitoring
+psutil>=5.9.0
+
+# Experiment tracking
+wandb>=0.15.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Development
+# pytest>=7.3.0
